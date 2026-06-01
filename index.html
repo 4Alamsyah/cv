@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV – Mohamad Rahman Alamsyah</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#07080d;
+    --surface:#0e1019;
+    --surface2:#13151f;
+    --surface3:#1a1d2a;
+    --accent:#00e5c0;
+    --accent2:#7b5ef8;
+    --accent3:#ff6b6b;
+    --text:#eef0f7;
+    --text-muted:#7c8099;
+    --text-dim:#4a4f66;
+    --border:#1f2235;
+    --font-head:'Syne',sans-serif;
+    --font-mono:'Space Mono',monospace;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-mono);overflow-x:hidden;min-height:100vh}
+  #canvas-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.6}
+  #app{position:relative;z-index:1}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:1rem 2rem;
+    display:flex;align-items:center;justify-content:space-between;
+    background:rgba(7,8,13,0.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-logo{
+    font-family:var(--font-head);font-size:1.1rem;font-weight:800;
+    color:var(--accent);letter-spacing:-0.02em;
+  }
+  .nav-links{display:flex;gap:2rem}
+  .nav-links a{
+    color:var(--text-muted);text-decoration:none;font-size:0.75rem;
+    letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;
+  }
+  .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+
+  /* HERO */
+  .hero{
+    min-height:100vh;display:flex;align-items:center;
+    padding:5rem 2rem 2rem;
+    max-width:1100px;margin:0 auto;
+  }
+  .hero-inner{width:100%}
+  .hero-label{
+    font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:1.5rem;
+    display:flex;align-items:center;gap:0.75rem;
+  }
+  .hero-label::before{content:'';display:block;width:2rem;height:1px;background:var(--accent)}
+  .hero-name{
+    font-family:var(--font-head);font-size:clamp(3rem,8vw,7rem);
+    font-weight:800;line-height:0.9;letter-spacing:-0.04em;
+    color:var(--text);margin-bottom:0.5rem;
+  }
+  .hero-name span{color:var(--accent)}
+  .hero-title{
+    font-family:var(--font-head);font-size:clamp(1rem,3vw,1.6rem);
+    font-weight:400;color:var(--text-muted);margin-bottom:2.5rem;
+    letter-spacing:0.02em;
+  }
+  .hero-summary{
+    max-width:600px;font-size:0.82rem;line-height:1.9;
+    color:var(--text-muted);margin-bottom:3rem;border-left:2px solid var(--accent2);
+    padding-left:1.25rem;
+  }
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+  .btn-primary{
+    padding:0.75rem 1.75rem;background:var(--accent);color:#000;
+    font-family:var(--font-mono);font-size:0.75rem;font-weight:700;
+    letter-spacing:0.1em;text-transform:uppercase;border:none;
+    cursor:pointer;transition:all 0.25s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+    text-decoration:none;display:inline-block;
+  }
+  .btn-primary:hover{background:#fff;transform:translateY(-2px)}
+  .btn-ghost{
+    padding:0.75rem 1.75rem;background:transparent;color:var(--text);
+    font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.1em;
+    text-transform:uppercase;border:1px solid var(--border);cursor:pointer;
+    transition:all 0.25s;text-decoration:none;display:inline-block;
+  }
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .hero-stats{
+    display:flex;gap:3rem;margin-top:4rem;padding-top:3rem;
+    border-top:1px solid var(--border);flex-wrap:wrap;
+  }
+  .stat-item{}
+  .stat-num{
+    font-family:var(--font-head);font-size:2.5rem;font-weight:800;
+    color:var(--accent);line-height:1;
+  }
+  .stat-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-top:0.25rem}
+
+  /* SECTIONS */
+  section{padding:5rem 2rem;max-width:1100px;margin:0 auto}
+  .section-tag{
+    font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--accent2);margin-bottom:0.75rem;
+    display:flex;align-items:center;gap:0.75rem;
+  }
+  .section-tag::before{content:'';display:block;width:1.5rem;height:1px;background:var(--accent2)}
+  .section-title{
+    font-family:var(--font-head);font-size:clamp(1.8rem,4vw,3rem);
+    font-weight:800;letter-spacing:-0.03em;color:var(--text);margin-bottom:3rem;
+    line-height:1;
+  }
+
+  /* EXPERIENCE */
+  .exp-card{
+    position:relative;padding:2rem;background:var(--surface);
+    border:1px solid var(--border);margin-bottom:1.5rem;
+    transition:border-color 0.3s,transform 0.3s;
+    clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  }
+  .exp-card:hover{border-color:var(--accent);transform:translateX(4px)}
+  .exp-card::before{
+    content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+    background:linear-gradient(to bottom,var(--accent),var(--accent2));
+  }
+  .exp-period{
+    font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:0.5rem;
+  }
+  .exp-company{
+    font-family:var(--font-head);font-size:1.3rem;font-weight:700;
+    color:var(--text);margin-bottom:0.25rem;
+  }
+  .exp-role{font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem}
+  .achievement-list{list-style:none;display:flex;flex-direction:column;gap:0.6rem}
+  .achievement-item{
+    display:flex;gap:0.75rem;align-items:flex-start;
+    font-size:0.78rem;line-height:1.7;color:var(--text-muted);
+    transition:color 0.2s;
+  }
+  .achievement-item:hover{color:var(--text)}
+  .ach-dot{
+    width:5px;height:5px;background:var(--accent);border-radius:0;
+    margin-top:0.55rem;flex-shrink:0;
+  }
+
+  /* SKILLS */
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+  .skill-block{
+    padding:1.5rem;background:var(--surface);border:1px solid var(--border);
+    transition:all 0.3s;position:relative;overflow:hidden;
+  }
+  .skill-block:hover{border-color:var(--accent2);background:var(--surface2)}
+  .skill-block::after{
+    content:'';position:absolute;bottom:0;right:0;
+    width:3rem;height:3rem;
+    border-left:1px solid var(--border);border-top:1px solid var(--border);
+    clip-path:polygon(100% 0,100% 100%,0 100%);
+    background:var(--accent2);opacity:0;transition:opacity 0.3s;
+  }
+  .skill-block:hover::after{opacity:0.15}
+  .skill-cat{
+    font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+    color:var(--accent2);margin-bottom:1rem;
+  }
+  .skill-tags{display:flex;flex-wrap:wrap;gap:0.5rem}
+  .skill-tag{
+    padding:0.35rem 0.75rem;font-size:0.72rem;letter-spacing:0.05em;
+    border:1px solid var(--border);color:var(--text-muted);
+    transition:all 0.2s;
+  }
+  .skill-tag:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,229,192,0.05)}
+  .skill-tag.learning{border-color:var(--accent3);color:var(--accent3)}
+
+  /* EDUCATION */
+  .edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+  .edu-card{
+    padding:2rem;background:var(--surface);border:1px solid var(--border);
+    position:relative;transition:all 0.3s;
+  }
+  .edu-card:hover{border-color:var(--accent);background:var(--surface2)}
+  .edu-badge{
+    display:inline-block;padding:0.3rem 0.75rem;background:rgba(123,94,248,0.12);
+    border:1px solid var(--accent2);color:var(--accent2);
+    font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem;
+  }
+  .edu-degree{
+    font-family:var(--font-head);font-size:1.1rem;font-weight:700;
+    color:var(--text);margin-bottom:0.5rem;line-height:1.3;
+  }
+  .edu-school{font-size:0.8rem;color:var(--accent);margin-bottom:0.25rem}
+  .edu-year{font-size:0.7rem;color:var(--text-dim);letter-spacing:0.1em}
+
+  /* CONTACT */
+  .contact-section{
+    background:var(--surface);border:1px solid var(--border);
+    padding:3rem;margin-top:2rem;position:relative;overflow:hidden;
+  }
+  .contact-section::before{
+    content:'';position:absolute;top:0;right:0;
+    width:40%;height:100%;
+    background:linear-gradient(135deg,transparent,rgba(0,229,192,0.04));
+    pointer-events:none;
+  }
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+  .contact-item{display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--border);transition:all 0.2s}
+  .contact-item:hover{border-color:var(--accent);background:var(--surface2)}
+  .contact-icon{
+    width:2.5rem;height:2.5rem;background:rgba(0,229,192,0.1);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);font-size:1.1rem;flex-shrink:0;
+  }
+  .contact-label{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.25rem}
+  .contact-val{font-size:0.8rem;color:var(--text)}
+  .contact-val a{color:var(--accent);text-decoration:none}
+  .contact-val a:hover{text-decoration:underline}
+
+  /* LANGUAGES */
+  .lang-grid{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:0.5rem}
+  .lang-item{padding:1rem 1.5rem;background:var(--surface);border:1px solid var(--border)}
+  .lang-name{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:0.25rem}
+  .lang-level{font-size:0.7rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase}
+
+  /* FOOTER */
+  footer{
+    text-align:center;padding:2rem;border-top:1px solid var(--border);
+    font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;
+    margin-top:2rem;
+  }
+
+  /* TRANSITIONS */
+  .fade-slide-enter-active,.fade-slide-leave-active{transition:all 0.5s cubic-bezier(.22,.68,0,1.2)}
+  .fade-slide-enter-from{opacity:0;transform:translateY(20px)}
+  .fade-slide-leave-to{opacity:0;transform:translateY(-20px)}
+
+  /* SCROLL ANIMATION */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+
+  /* GLITCH EFFECT */
+  @keyframes glitch{
+    0%,100%{clip-path:inset(0 0 100% 0);transform:translate(0)}
+    20%{clip-path:inset(20% 0 60% 0);transform:translate(-3px,1px)}
+    40%{clip-path:inset(50% 0 30% 0);transform:translate(3px,-1px)}
+    60%{clip-path:inset(80% 0 5% 0);transform:translate(-2px,2px)}
+    80%{clip-path:inset(10% 0 80% 0);transform:translate(2px,-2px)}
+  }
+  .hero-name-wrap{position:relative;display:inline-block}
+  .hero-name-wrap .glitch{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    color:var(--accent);animation:glitch 4s infinite;opacity:0.35;
+    pointer-events:none;
+  }
+
+  /* CURSOR EFFECT */
+  #cursor{
+    width:10px;height:10px;background:var(--accent);border-radius:0;
+    position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+    mix-blend-mode:screen;transition:transform 0.1s;transform:translate(-50%,-50%);
+  }
+  #cursor-trail{
+    width:30px;height:30px;border:1px solid var(--accent);border-radius:0;
+    position:fixed;top:0;left:0;pointer-events:none;z-index:9998;
+    opacity:0.4;transition:all 0.2s ease;transform:translate(-50%,-50%);
+  }
+
+  /* PROGRESS BARS */
+  .skill-progress-wrap{margin-top:1.5rem}
+  .sp-row{display:flex;align-items:center;gap:1rem;margin-bottom:0.6rem}
+  .sp-label{font-size:0.72rem;color:var(--text-muted);min-width:80px}
+  .sp-bar{flex:1;height:2px;background:var(--border);position:relative;overflow:hidden}
+  .sp-fill{height:100%;background:linear-gradient(to right,var(--accent),var(--accent2));
+    width:0;transition:width 1.2s cubic-bezier(.22,.68,0,1.2);
+  }
+  .sp-pct{font-size:0.65rem;color:var(--text-dim);min-width:28px;text-align:right}
+
+  @media(max-width:768px){
+    .contact-grid{grid-template-columns:1fr}
+    .nav-links{display:none}
+    .hero-stats{gap:1.5rem}
+  }
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+<canvas id="canvas-bg"></canvas>
+
+<div id="app">
+  <nav>
+    <div class="nav-logo">MRA_CV</div>
+    <div class="nav-links">
+      <a href="#experience" :class="{active:activeSection==='experience'}">Experience</a>
+      <a href="#skills" :class="{active:activeSection==='skills'}">Skills</a>
+      <a href="#education" :class="{active:activeSection==='education'}">Education</a>
+      <a href="#contact" :class="{active:activeSection==='contact'}">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-label">Available for opportunities</div>
+      <div class="hero-name-wrap">
+        <h1 class="hero-name">
+          MOHAMAD<br><span>RAHMAN</span><br>ALAMSYAH
+        </h1>
+        <div class="hero-name glitch" aria-hidden="true">
+          MOHAMAD<br><span>RAHMAN</span><br>ALAMSYAH
+        </div>
+      </div>
+      <div class="hero-title">IoT &amp; Web Application Developer</div>
+      <p class="hero-summary">
+        A dedicated IoT and Web Application Developer with 3.5 years of professional experience designing and developing web-based systems integrated with IoT devices and enterprise platforms. Proficient in PHP, Laravel, and Python — currently deepening expertise in AI and machine learning applications.
+      </p>
+      <div class="hero-cta">
+        <a href="#experience" class="btn-primary">View Experience</a>
+        <a href="#contact" class="btn-ghost">Get In Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">3.5<span style="font-size:1.2rem;color:var(--text-muted)">yr</span></div>
+          <div class="stat-label">Professional Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">4+</div>
+          <div class="stat-label">Projects per semester</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Systems Delivered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Tech Stacks</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-tag">Work History</div>
+    <div class="section-title reveal">Experience</div>
+    <div class="exp-card reveal">
+      <div class="exp-period">2022 — Present</div>
+      <div class="exp-company">PT Bumiputra Manufaktur Teknologi</div>
+      <div class="exp-role">Supervisor – IoT &amp; Web Application · Kab. Bekasi, Indonesia</div>
+      <ul class="achievement-list">
+        <li class="achievement-item"><span class="ach-dot"></span>Successfully delivered 4 application projects within a single semester</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Developed and deployed a web application fully integrated with the company's ERP system</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Implemented RFID integration with ERP for real-time asset and production tracking</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Built and maintained an internal OEE (Overall Equipment Effectiveness) monitoring system</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Established IoT communication pipelines using Node-RED via Modbus protocol to web interface</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Developed Truck Board Delivery app with real-time GPS tracking, enabling live supply chain visibility</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Integrated Modula vertical warehouse machines with ERP for automated picklist generation and auto-order processing</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Built Andon system integration with My Production app for instant shop-floor issue visibility</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Currently integrating a local AI model into My Production app for intelligent suggestions and automated summaries</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Integrated web application with digital weighing scales for raw material monitoring pre-burning process</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Developed Gas Monitoring system integrated with flow meters to track real-time gas consumption and operational costs</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-tag">Technical Arsenal</div>
+    <div class="section-title reveal">Skills</div>
+    <div class="skills-grid">
+      <div class="skill-block reveal">
+        <div class="skill-cat">Programming Languages</div>
+        <div class="skill-tags">
+          <span class="skill-tag">PHP</span>
+          <span class="skill-tag">Laravel</span>
+          <span class="skill-tag">Python</span>
+        </div>
+        <div class="skill-progress-wrap">
+          <div class="sp-row"><span class="sp-label">PHP</span><div class="sp-bar"><div class="sp-fill" data-width="90"></div></div><span class="sp-pct">90%</span></div>
+          <div class="sp-row"><span class="sp-label">Laravel</span><div class="sp-bar"><div class="sp-fill" data-width="85"></div></div><span class="sp-pct">85%</span></div>
+          <div class="sp-row"><span class="sp-label">Python</span><div class="sp-bar"><div class="sp-fill" data-width="70"></div></div><span class="sp-pct">70%</span></div>
+        </div>
+      </div>
+      <div class="skill-block reveal">
+        <div class="skill-cat">Databases</div>
+        <div class="skill-tags">
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">SQL Server</span>
+          <span class="skill-tag">PostgreSQL</span>
+        </div>
+        <div class="skill-progress-wrap">
+          <div class="sp-row"><span class="sp-label">MySQL</span><div class="sp-bar"><div class="sp-fill" data-width="88"></div></div><span class="sp-pct">88%</span></div>
+          <div class="sp-row"><span class="sp-label">SQL Server</span><div class="sp-bar"><div class="sp-fill" data-width="80"></div></div><span class="sp-pct">80%</span></div>
+          <div class="sp-row"><span class="sp-label">PostgreSQL</span><div class="sp-bar"><div class="sp-fill" data-width="65"></div></div><span class="sp-pct">65%</span></div>
+        </div>
+      </div>
+      <div class="skill-block reveal">
+        <div class="skill-cat">IoT &amp; Integration</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Node-RED</span>
+          <span class="skill-tag">Modbus</span>
+          <span class="skill-tag">RFID</span>
+        </div>
+        <div class="skill-progress-wrap">
+          <div class="sp-row"><span class="sp-label">Node-RED</span><div class="sp-bar"><div class="sp-fill" data-width="85"></div></div><span class="sp-pct">85%</span></div>
+          <div class="sp-row"><span class="sp-label">Modbus</span><div class="sp-bar"><div class="sp-fill" data-width="78"></div></div><span class="sp-pct">78%</span></div>
+          <div class="sp-row"><span class="sp-label">RFID</span><div class="sp-bar"><div class="sp-fill" data-width="80"></div></div><span class="sp-pct">80%</span></div>
+        </div>
+      </div>
+      <div class="skill-block reveal">
+        <div class="skill-cat">Currently Learning</div>
+        <div class="skill-tags">
+          <span class="skill-tag learning">AI / Machine Learning</span>
+          <span class="skill-tag learning">PostgreSQL Advanced</span>
+        </div>
+        <div class="skill-progress-wrap">
+          <div class="sp-row"><span class="sp-label">AI / ML</span><div class="sp-bar"><div class="sp-fill" data-width="40"></div></div><span class="sp-pct">40%</span></div>
+          <div class="sp-row"><span class="sp-label">PostgreSQL+</span><div class="sp-bar"><div class="sp-fill" data-width="50"></div></div><span class="sp-pct">50%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:2.5rem" class="reveal">
+      <div class="section-tag" style="margin-bottom:1rem">Soft Skills</div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <span class="skill-tag" style="padding:0.5rem 1.25rem;font-size:0.78rem">Problem Solving</span>
+        <span class="skill-tag" style="padding:0.5rem 1.25rem;font-size:0.78rem">Team Leadership</span>
+        <span class="skill-tag" style="padding:0.5rem 1.25rem;font-size:0.78rem">Time Management</span>
+        <span class="skill-tag" style="padding:0.5rem 1.25rem;font-size:0.78rem">Communication</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-tag">Academic Background</div>
+    <div class="section-title reveal">Education</div>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-badge">In Progress</div>
+        <div class="edu-degree">Bachelor of Information Systems (S1)</div>
+        <div class="edu-school">President University</div>
+        <div class="edu-year">2024 — Present · Cikarang, Bekasi</div>
+        <p style="font-size:0.75rem;color:var(--text-dim);margin-top:1rem;line-height:1.7">
+          Currently pursuing undergraduate degree to deepen knowledge in information systems, software engineering, and emerging technologies.
+        </p>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-badge" style="border-color:var(--accent);color:var(--accent);background:rgba(0,229,192,0.08)">Graduated</div>
+        <div class="edu-degree">Diploma – Management Information Systems</div>
+        <div class="edu-school">Universitas Gunadarma</div>
+        <div class="edu-year">Graduated 2022</div>
+      </div>
+    </div>
+
+    <div style="margin-top:2.5rem" class="reveal">
+      <div class="section-tag" style="margin-bottom:1rem">Languages</div>
+      <div class="lang-grid">
+        <div class="lang-item">
+          <div class="lang-name">Bahasa Indonesia</div>
+          <div class="lang-level">Native</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">English</div>
+          <div class="lang-level">Elementary · A2</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-tag">Get In Touch</div>
+    <div class="section-title reveal">Contact</div>
+    <div class="contact-section reveal">
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-icon">☎</div>
+          <div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-val">082112971698</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val"><a href="mailto:ravensproject1@gmail.com">ravensproject1@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">◎</div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-val">Kab. Bekasi, West Java, Indonesia</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">in</div>
+          <div>
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-val"><a href="https://www.linkedin.com/in/mohamad-rahman-alamsyah-17124a195/" target="_blank">linkedin.com/in/mohamad-rahman-alamsyah</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Curriculum Vitae &nbsp;·&nbsp; Mohamad Rahman Alamsyah &nbsp;·&nbsp; ravensproject1@gmail.com &nbsp;·&nbsp; 082112971698
+  </footer>
+</div>
+
+<script>
+/* ── THREE.JS PARTICLE FIELD ── */
+(function(){
+  const canvas = document.getElementById('canvas-bg');
+  const renderer = new THREE.WebGLRenderer({canvas,alpha:true,antialias:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth,window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,1000);
+  camera.position.z = 80;
+
+  const count = 1800;
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array(count*3);
+  const velocities = new Float32Array(count*3);
+  const colors = new Float32Array(count*3);
+
+  const palettes = [
+    [0,0.9,0.75],   // teal/accent
+    [0.73,0.37,0.98], // purple/accent2
+    [1,0.42,0.42],  // coral
+  ];
+
+  for(let i=0;i<count;i++){
+    positions[i*3]=(Math.random()-0.5)*220;
+    positions[i*3+1]=(Math.random()-0.5)*150;
+    positions[i*3+2]=(Math.random()-0.5)*100;
+    velocities[i*3]=(Math.random()-0.5)*0.018;
+    velocities[i*3+1]=(Math.random()-0.5)*0.012;
+    velocities[i*3+2]=0;
+    const c = palettes[Math.floor(Math.random()*3)];
+    colors[i*3]=c[0];colors[i*3+1]=c[1];colors[i*3+2]=c[2];
+  }
+
+  geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+
+  const mat = new THREE.PointsMaterial({
+    size:0.55,vertexColors:true,
+    transparent:true,opacity:0.7,
+    sizeAttenuation:true,
+  });
+
+  const particles = new THREE.Points(geo,mat);
+  scene.add(particles);
+
+  /* connection lines */
+  const lineGeo = new THREE.BufferGeometry();
+  const linePositions = new Float32Array(count*count);
+  const lineMat = new THREE.LineSegments(
+    lineGeo,
+    new THREE.LineBasicMaterial({color:0x00e5c0,opacity:0.04,transparent:true})
+  );
+  scene.add(lineMat);
+
+  let mouse = {x:0,y:0};
+  document.addEventListener('mousemove',e=>{
+    mouse.x = (e.clientX/window.innerWidth-0.5)*2;
+    mouse.y = (e.clientY/window.innerHeight-0.5)*2;
+  });
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t+=0.003;
+    const pos = geo.attributes.position.array;
+    for(let i=0;i<count;i++){
+      pos[i*3]+=velocities[i*3]+Math.sin(t+i*0.01)*0.003;
+      pos[i*3+1]+=velocities[i*3+1]+Math.cos(t+i*0.013)*0.002;
+      if(pos[i*3]>110){pos[i*3]=-110}
+      if(pos[i*3]<-110){pos[i*3]=110}
+      if(pos[i*3+1]>75){pos[i*3+1]=-75}
+      if(pos[i*3+1]<-75){pos[i*3+1]=75}
+    }
+    geo.attributes.position.needsUpdate=true;
+    particles.rotation.y += 0.0004 + mouse.x*0.0003;
+    particles.rotation.x += 0.0002 + mouse.y*0.0002;
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  window.addEventListener('resize',()=>{
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  });
+})();
+
+/* ── VUE APP ── */
+const {createApp,ref,onMounted} = Vue;
+createApp({
+  setup(){
+    const activeSection = ref('');
+    onMounted(()=>{
+      /* Scroll reveal */
+      const reveals = document.querySelectorAll('.reveal');
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('visible');
+            /* animate progress bars */
+            e.target.querySelectorAll('.sp-fill').forEach(bar=>{
+              const w = bar.getAttribute('data-width');
+              if(w) setTimeout(()=>{ bar.style.width = w+'%'; },100);
+            });
+          }
+        });
+      },{threshold:0.12});
+      reveals.forEach(r=>obs.observe(r));
+
+      /* Active section tracking */
+      const sections = document.querySelectorAll('section');
+      const sectionObs = new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) activeSection.value = e.target.id;
+        });
+      },{rootMargin:'-40% 0px -40% 0px'});
+      sections.forEach(s=>sectionObs.observe(s));
+    });
+    return {activeSection};
+  }
+}).mount('#app');
+
+/* ── CURSOR ── */
+(function(){
+  const c = document.getElementById('cursor');
+  const ct = document.getElementById('cursor-trail');
+  let mx=0,my=0,tx=0,ty=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    c.style.left=mx+'px';c.style.top=my+'px';
+  });
+  function loop(){
+    tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;
+    ct.style.left=tx+'px';ct.style.top=ty+'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+  document.querySelectorAll('a,.btn-primary,.btn-ghost').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      c.style.transform='translate(-50%,-50%) scale(2.5)';
+      ct.style.transform='translate(-50%,-50%) scale(1.5)';
+      ct.style.opacity='0.2';
+    });
+    el.addEventListener('mouseleave',()=>{
+      c.style.transform='translate(-50%,-50%) scale(1)';
+      ct.style.transform='translate(-50%,-50%) scale(1)';
+      ct.style.opacity='0.4';
+    });
+  });
+})();
+</script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6a1d561ee717081c2b47efc6/1jq19gq69';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+</body>
+</html>
