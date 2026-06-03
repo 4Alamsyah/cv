@@ -287,6 +287,184 @@
     .nav-links{display:none}
     .hero-stats{gap:1.5rem}
   }
+
+  /* ── PORTFOLIO ── */
+  .portfolio-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.5rem;
+  }
+  .port-card{
+    position:relative;background:var(--surface);
+    border:1px solid var(--border);overflow:hidden;
+    cursor:pointer;
+    transition:border-color 0.35s,box-shadow 0.35s,transform 0.35s;
+    clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  }
+  .port-card:hover{
+    border-color:var(--accent);transform:translateY(-6px);
+    box-shadow:0 24px 60px rgba(0,229,192,0.1),0 0 0 1px rgba(0,229,192,0.15);
+  }
+  .port-card.port-featured{grid-column:span 2}
+  .port-card.port-wide{grid-column:span 2}
+
+  .port-img-wrap{
+    position:relative;overflow:hidden;aspect-ratio:16/10;
+  }
+  .port-featured .port-img-wrap{aspect-ratio:21/9}
+  .port-img-wrap img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform 0.65s cubic-bezier(.22,.68,0,1.2),filter 0.4s;
+    filter:brightness(0.75) saturate(0.8);
+  }
+  .port-card:hover .port-img-wrap img{
+    transform:scale(1.06);
+    filter:brightness(0.95) saturate(1.1);
+  }
+
+  .port-scan-line{
+    position:absolute;top:-100%;left:0;width:100%;height:40%;
+    background:linear-gradient(to bottom,transparent,rgba(0,229,192,0.06),transparent);
+    transition:top 0.6s ease;pointer-events:none;
+  }
+  .port-card:hover .port-scan-line{top:100%}
+
+  .port-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(0,229,192,0.12) 0%,rgba(123,94,248,0.2) 100%);
+    opacity:0;transition:opacity 0.4s;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;gap:1rem;
+  }
+  .port-card:hover .port-overlay{opacity:1}
+
+  .port-expand-btn{
+    padding:0.65rem 1.6rem;
+    background:rgba(7,8,13,0.85);
+    border:1px solid var(--accent);
+    color:var(--accent);
+    font-family:var(--font-mono);font-size:0.7rem;
+    letter-spacing:0.12em;text-transform:uppercase;
+    cursor:pointer;transition:all 0.2s;
+    backdrop-filter:blur(6px);
+  }
+  .port-expand-btn:hover{background:var(--accent);color:#000}
+
+  .port-num-badge{
+    position:absolute;top:1rem;left:1rem;
+    font-family:var(--font-head);font-size:2.5rem;font-weight:800;
+    color:rgba(0,229,192,0.12);line-height:1;pointer-events:none;
+    transition:color 0.3s;
+    user-select:none;
+  }
+  .port-card:hover .port-num-badge{color:rgba(0,229,192,0.25)}
+
+  .port-type-badge{
+    position:absolute;top:1rem;right:1rem;
+    padding:0.25rem 0.65rem;
+    background:rgba(7,8,13,0.75);
+    border:1px solid var(--border);
+    color:var(--text-muted);font-size:0.6rem;
+    letter-spacing:0.12em;text-transform:uppercase;
+    backdrop-filter:blur(4px);transition:border-color 0.3s,color 0.3s;
+  }
+  .port-card:hover .port-type-badge{border-color:var(--accent);color:var(--accent)}
+
+  .port-info{
+    padding:1.25rem 1.5rem 1.5rem;
+    border-top:1px solid var(--border);
+    transition:border-color 0.3s;
+    position:relative;
+  }
+  .port-card:hover .port-info{border-color:rgba(0,229,192,0.2)}
+  .port-info::before{
+    content:'';position:absolute;top:0;left:0;
+    width:0;height:2px;
+    background:linear-gradient(to right,var(--accent),var(--accent2));
+    transition:width 0.4s ease;
+  }
+  .port-card:hover .port-info::before{width:100%}
+
+  .port-title{
+    font-family:var(--font-head);font-size:1.1rem;font-weight:700;
+    color:var(--text);margin-bottom:0.5rem;letter-spacing:-0.01em;
+    transition:color 0.2s;
+  }
+  .port-card:hover .port-title{color:var(--accent)}
+  .port-desc{
+    font-size:0.75rem;line-height:1.75;color:var(--text-muted);margin-bottom:1rem;
+  }
+  .port-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
+  .port-tag{
+    padding:0.2rem 0.6rem;font-size:0.62rem;letter-spacing:0.07em;
+    border:1px solid var(--border);color:var(--text-dim);
+    transition:all 0.25s;
+  }
+  .port-card:hover .port-tag{
+    border-color:rgba(0,229,192,0.25);color:var(--text-muted);
+  }
+  .port-tag.accent{border-color:rgba(123,94,248,0.35);color:var(--accent2)}
+
+  /* LIGHTBOX */
+  #lightbox{
+    position:fixed;inset:0;z-index:9500;
+    background:rgba(7,8,13,0.96);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    opacity:0;pointer-events:none;
+    transition:opacity 0.3s;
+    backdrop-filter:blur(10px);
+  }
+  #lightbox.lb-active{opacity:1;pointer-events:all}
+  .lb-inner{
+    position:relative;max-width:92vw;
+    animation:lbFadeIn 0.35s cubic-bezier(.22,.68,0,1.2) both;
+  }
+  @keyframes lbFadeIn{
+    from{opacity:0;transform:scale(0.92) translateY(20px)}
+    to{opacity:1;transform:scale(1) translateY(0)}
+  }
+  .lb-img{
+    max-width:100%;max-height:82vh;object-fit:contain;
+    border:1px solid var(--border);display:block;
+    box-shadow:0 0 80px rgba(0,229,192,0.08);
+  }
+  .lb-footer{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:1rem;padding:0 0.25rem;
+  }
+  .lb-title{
+    font-family:var(--font-head);font-size:0.9rem;font-weight:700;
+    color:var(--accent);letter-spacing:0.06em;
+  }
+  .lb-sub{font-size:0.65rem;color:var(--text-dim);letter-spacing:0.1em;margin-top:0.2rem}
+  .lb-close{
+    position:absolute;top:-3rem;right:0;
+    background:none;border:1px solid var(--border);
+    color:var(--text-muted);width:2.2rem;height:2.2rem;
+    cursor:pointer;font-size:1.1rem;
+    display:flex;align-items:center;justify-content:center;
+    transition:all 0.2s;font-family:var(--font-mono);
+  }
+  .lb-close:hover{border-color:var(--accent3);color:var(--accent3)}
+  .lb-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    background:rgba(7,8,13,0.75);border:1px solid var(--border);
+    color:var(--text-muted);width:2.5rem;height:2.5rem;
+    cursor:pointer;font-size:1.2rem;
+    display:flex;align-items:center;justify-content:center;
+    transition:all 0.2s;backdrop-filter:blur(4px);
+  }
+  .lb-nav:hover{border-color:var(--accent);color:var(--accent)}
+  .lb-prev{left:-3.5rem}
+  .lb-next{right:-3.5rem}
+  .lb-counter{
+    font-size:0.65rem;color:var(--text-dim);letter-spacing:0.1em;
+  }
+
+  @media(max-width:900px){
+    .portfolio-grid{grid-template-columns:1fr}
+    .port-card.port-featured,.port-card.port-wide{grid-column:span 1}
+  }
 </style>
 </head>
 <body>
@@ -299,6 +477,7 @@
     <div class="nav-logo">MRA_CV</div>
     <div class="nav-links">
       <a href="#experience" :class="{active:activeSection==='experience'}">Experience</a>
+      <a href="#portfolio" :class="{active:activeSection==='portfolio'}">Portfolio</a>
       <a href="#skills" :class="{active:activeSection==='skills'}">Skills</a>
       <a href="#education" :class="{active:activeSection==='education'}">Education</a>
       <a href="#contact" :class="{active:activeSection==='contact'}">Contact</a>
@@ -323,6 +502,7 @@
       </p>
       <div class="hero-cta">
         <a href="#experience" class="btn-primary">View Experience</a>
+        <a href="#portfolio" class="btn-ghost">See Portfolio</a>
         <a href="#contact" class="btn-ghost">Get In Touch</a>
       </div>
       <div class="hero-stats">
@@ -369,6 +549,149 @@
       </ul>
     </div>
   </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="section-tag">Selected Work</div>
+    <div class="section-title reveal">Portfolio</div>
+
+    <div class="portfolio-grid">
+
+      <!-- 01 · GPS Truck Delivery Control (featured, 2 cols) -->
+      <div class="port-card port-featured reveal" onclick="openLightbox(0)">
+        <div class="port-img-wrap">
+          <img src="gps.png" alt="Truck Delivery Control Dashboard" loading="lazy">
+          <div class="port-scan-line"></div>
+          <div class="port-overlay">
+            <button class="port-expand-btn" onclick="event.stopPropagation();openLightbox(0)">⤢ Expand View</button>
+          </div>
+          <div class="port-num-badge">01</div>
+          <div class="port-type-badge">GPS · Fleet</div>
+        </div>
+        <div class="port-info">
+          <div class="port-title">Truck Delivery Control</div>
+          <div class="port-desc">Real-time fleet visibility dashboard tracking 13 active deliveries with GPS-based status classification — Normal, Advance, Delay, Standby — plus live ETA and customer arrival timestamps synced to ERP.</div>
+          <div class="port-tags">
+            <span class="port-tag">PHP / Laravel</span>
+            <span class="port-tag">GPS API</span>
+            <span class="port-tag">Real-Time</span>
+            <span class="port-tag">ERP Integration</span>
+            <span class="port-tag accent">IoT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 · AI Assistant (1 col) -->
+      <div class="port-card reveal" onclick="openLightbox(1)">
+        <div class="port-img-wrap">
+          <img src="ai.png" alt="PreDelivery AI Assistant" loading="lazy">
+          <div class="port-scan-line"></div>
+          <div class="port-overlay">
+            <button class="port-expand-btn" onclick="event.stopPropagation();openLightbox(1)">⤢ Expand View</button>
+          </div>
+          <div class="port-num-badge">02</div>
+          <div class="port-type-badge">AI · Chat</div>
+        </div>
+        <div class="port-info">
+          <div class="port-title">PreDelivery AI Assistant</div>
+          <div class="port-desc">Multi-model AI chatbot (OpenRouter DeepSeek R1 / Groq / Gemini) for delivery data analysis, abnormality detection, and route performance insights.</div>
+          <div class="port-tags">
+            <span class="port-tag accent">AI / LLM</span>
+            <span class="port-tag">OpenRouter</span>
+            <span class="port-tag">Groq</span>
+            <span class="port-tag">Gemini</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 · My Stock Modula (1 col) -->
+      <div class="port-card reveal" onclick="openLightbox(2)">
+        <div class="port-img-wrap">
+          <img src="mystock.png" alt="My Stock Modula Monitoring" loading="lazy">
+          <div class="port-scan-line"></div>
+          <div class="port-overlay">
+            <button class="port-expand-btn" onclick="event.stopPropagation();openLightbox(2)">⤢ Expand View</button>
+          </div>
+          <div class="port-num-badge">03</div>
+          <div class="port-type-badge">Inventory · IoT</div>
+        </div>
+        <div class="port-info">
+          <div class="port-title">My Stock — Modula Monitor</div>
+          <div class="port-desc">Vertical warehouse inventory system displaying real-time stock levels, min/max thresholds, and age tracking per SKU — integrated with Modula machines and ERP auto-ordering.</div>
+          <div class="port-tags">
+            <span class="port-tag">PHP</span>
+            <span class="port-tag">Modula API</span>
+            <span class="port-tag accent">IoT</span>
+            <span class="port-tag">ERP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 · My Stock Extended View (1 col) -->
+      <div class="port-card reveal" onclick="openLightbox(3)">
+        <div class="port-img-wrap">
+          <img src="mystock1.png" alt="My Stock Extended Analytics" loading="lazy">
+          <div class="port-scan-line"></div>
+          <div class="port-overlay">
+            <button class="port-expand-btn" onclick="event.stopPropagation();openLightbox(3)">⤢ Expand View</button>
+          </div>
+          <div class="port-num-badge">04</div>
+          <div class="port-type-badge">Analytics · Dark</div>
+        </div>
+        <div class="port-info">
+          <div class="port-title">My Stock — Analytics View</div>
+          <div class="port-desc">Dark-mode stock analytics dashboard with machine-level KPIs, multi-module inventory state visualization, and critical low-stock alerting across all Modula vertical units.</div>
+          <div class="port-tags">
+            <span class="port-tag">PHP</span>
+            <span class="port-tag">Modula</span>
+            <span class="port-tag">Dashboard</span>
+            <span class="port-tag accent">Analytics</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 · Waiting Post & Preparation Monitor (2 cols, wide) -->
+      <div class="port-card port-wide reveal" onclick="openLightbox(4)">
+        <div class="port-img-wrap">
+          <img src="waitingpost.png" alt="Waiting Post & Preparation Monitor" loading="lazy">
+          <div class="port-scan-line"></div>
+          <div class="port-overlay">
+            <button class="port-expand-btn" onclick="event.stopPropagation();openLightbox(4)">⤢ Expand View</button>
+          </div>
+          <div class="port-num-badge">05</div>
+          <div class="port-type-badge">Production · Live</div>
+        </div>
+        <div class="port-info">
+          <div class="port-title">Waiting Post &amp; Preparation Monitor</div>
+          <div class="port-desc">Split-screen production schedule orchestrator showing waiting post assignments on the left and real-time preparation progress bars on the right — enabling instant shop-floor visibility for dispatch operations.</div>
+          <div class="port-tags">
+            <span class="port-tag">PHP / Laravel</span>
+            <span class="port-tag">Real-Time</span>
+            <span class="port-tag">Production</span>
+            <span class="port-tag accent">Live Dashboard</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <div class="lb-inner" onclick="event.stopPropagation()">
+      <button class="lb-close" onclick="closeLightbox()">✕</button>
+      <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
+      <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
+      <img id="lb-img" class="lb-img" src="" alt="">
+      <div class="lb-footer">
+        <div>
+          <div class="lb-title" id="lb-title"></div>
+          <div class="lb-sub" id="lb-sub"></div>
+        </div>
+        <div class="lb-counter" id="lb-counter"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- SKILLS -->
   <section id="skills">
@@ -641,6 +964,51 @@ createApp({
     return {activeSection};
   }
 }).mount('#app');
+
+/* ── LIGHTBOX ── */
+(function(){
+  const projects = [
+    {src:'gps.png',    title:'Truck Delivery Control',       sub:'GPS · Fleet Monitoring · ERP Integration'},
+    {src:'ai.png',     title:'PreDelivery AI Assistant',     sub:'Multi-Model LLM · OpenRouter · Groq · Gemini'},
+    {src:'mystock.png',title:'My Stock — Modula Monitor',    sub:'Inventory IoT · Modula API · ERP'},
+    {src:'mystock1.png',title:'My Stock — Analytics View',   sub:'Dark Dashboard · Multi-Module Analytics'},
+    {src:'waitingpost.png',title:'Waiting Post & Preparation Monitor', sub:'Production · Live Dashboard · Laravel'},
+  ];
+  let current = 0;
+  const lb    = document.getElementById('lightbox');
+  const img   = document.getElementById('lb-img');
+  const title = document.getElementById('lb-title');
+  const sub   = document.getElementById('lb-sub');
+  const count = document.getElementById('lb-counter');
+
+  function show(i){
+    current = ((i % projects.length) + projects.length) % projects.length;
+    const p = projects[current];
+    img.src = p.src; img.alt = p.title;
+    title.textContent = p.title;
+    sub.textContent   = p.sub;
+    count.textContent = `${String(current+1).padStart(2,'0')} / ${String(projects.length).padStart(2,'0')}`;
+  }
+
+  window.openLightbox = function(idx){
+    show(idx);
+    lb.classList.add('lb-active');
+    document.body.style.overflow='hidden';
+  };
+  window.closeLightbox = function(){
+    lb.classList.remove('lb-active');
+    document.body.style.overflow='';
+  };
+  window.lbNav = function(dir){
+    show(current + dir);
+  };
+  document.addEventListener('keydown',e=>{
+    if(!lb.classList.contains('lb-active')) return;
+    if(e.key==='Escape')  closeLightbox();
+    if(e.key==='ArrowLeft')  lbNav(-1);
+    if(e.key==='ArrowRight') lbNav(1);
+  });
+})();
 
 /* ── CURSOR ── */
 (function(){
