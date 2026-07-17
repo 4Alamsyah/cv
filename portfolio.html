@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio – Mohamad Rahman Alamsyah</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#07080d;
+    --surface:#0e1019;
+    --accent:#00e5c0;
+    --accent2:#7b5ef8;
+    --accent3:#ff6b6b;
+    --text:#eef0f7;
+    --text-muted:#7c8099;
+    --text-dim:#4a4f66;
+    --border:#1f2235;
+    --font-head:'Syne',sans-serif;
+    --font-mono:'Space Mono',monospace;
+  }
+  html,body{
+    background:var(--bg);color:var(--text);
+    font-family:var(--font-mono);
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  /* ── PRINT CONFIG ── */
+  @page{size:A4 portrait;margin:0}
+
+  /* ── SCREEN WRAPPER ── */
+  body{padding:24px 0 80px}
+  .page{
+    width:210mm;min-height:297mm;
+    margin:0 auto 24px;
+    overflow:hidden;
+    page-break-after:always;
+    break-after:page;
+    position:relative;
+  }
+  @media print{
+    body{padding:0;background:var(--bg)}
+    .page{margin:0;min-height:297mm;height:297mm}
+    .no-print{display:none!important}
+  }
+
+  /* ── FLOATING BUTTONS ── */
+  .fab-wrap{
+    position:fixed;bottom:2rem;right:2rem;z-index:1000;
+    display:flex;flex-direction:column;gap:0.75rem;align-items:flex-end;
+  }
+  .fab-pdf{
+    padding:0.85rem 2rem;background:var(--accent);color:#000;
+    font-family:var(--font-mono);font-size:0.75rem;font-weight:700;
+    letter-spacing:0.1em;text-transform:uppercase;border:none;cursor:pointer;
+    clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+    transition:background 0.2s,transform 0.2s;
+  }
+  .fab-pdf:hover{background:#fff;transform:translateY(-2px)}
+  .fab-back{
+    padding:0.6rem 1.25rem;background:transparent;color:var(--text-muted);
+    font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.1em;
+    text-transform:uppercase;border:1px solid var(--border);cursor:pointer;
+    transition:all 0.2s;text-decoration:none;display:block;text-align:center;
+  }
+  .fab-back:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ══════════════════════════════════ */
+  /* COVER PAGE                        */
+  /* ══════════════════════════════════ */
+  .page-cover{
+    background:var(--bg);
+    padding:13mm 14mm 12mm;
+    display:flex;flex-direction:column;
+  }
+  .cover-topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-bottom:5mm;border-bottom:1px solid var(--border);
+    margin-bottom:0;
+  }
+  .cover-logo{
+    font-family:var(--font-head);font-size:4mm;font-weight:800;
+    color:var(--accent);letter-spacing:-0.02em;
+  }
+  .cover-doc-tag{
+    font-size:2mm;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--text-dim);border:1px solid var(--border);
+    padding:1.5mm 4mm;
+  }
+
+  .cover-main{
+    flex:1;display:flex;flex-direction:column;justify-content:center;
+    padding:12mm 0 8mm;
+  }
+  .cover-eyebrow{
+    font-size:2.5mm;letter-spacing:0.25em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:7mm;
+    display:flex;align-items:center;gap:5mm;
+  }
+  .cover-eyebrow::before{
+    content:'';display:block;width:14mm;height:1px;background:var(--accent);
+  }
+  .cover-name{
+    font-family:var(--font-head);font-size:17mm;font-weight:800;
+    line-height:0.9;letter-spacing:-0.03em;color:var(--text);margin-bottom:5mm;
+    word-break:keep-all;overflow-wrap:normal;
+  }
+  .cover-name span{color:var(--accent)}
+  .cover-role{
+    font-family:var(--font-head);font-size:4.5mm;font-weight:400;
+    color:var(--text-muted);margin-bottom:7mm;letter-spacing:0.02em;
+  }
+  .cover-line{
+    width:100%;height:1px;
+    background:linear-gradient(to right,var(--accent),var(--accent2),transparent);
+    margin-bottom:7mm;
+  }
+  .cover-summary{
+    font-size:2.8mm;line-height:1.85;color:var(--text-muted);
+    max-width:128mm;border-left:2px solid var(--accent2);padding-left:5mm;
+  }
+
+  .cover-stats{
+    display:flex;gap:0;
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    margin-bottom:7mm;
+  }
+  .cstat{
+    flex:1;padding:4mm 5mm;border-right:1px solid var(--border);
+  }
+  .cstat:last-child{border-right:none}
+  .cstat-num{
+    font-family:var(--font-head);font-size:8mm;font-weight:800;
+    color:var(--accent);line-height:1;
+  }
+  .cstat-num small{font-size:4mm;color:var(--text-dim)}
+  .cstat-lbl{
+    font-size:2mm;letter-spacing:0.15em;text-transform:uppercase;
+    color:var(--text-dim);margin-top:1mm;
+  }
+
+  .cover-stack{
+    display:flex;flex-wrap:wrap;gap:2mm;margin-bottom:8mm;
+  }
+  .ctag{
+    padding:1.5mm 4mm;font-size:2mm;letter-spacing:0.07em;
+    border:1px solid var(--border);color:var(--text-dim);
+  }
+  .ctag.hi{border-color:rgba(0,229,192,0.35);color:var(--accent)}
+  .ctag.hi2{border-color:rgba(123,94,248,0.35);color:var(--accent2)}
+  .ctag.lo{border-color:rgba(255,107,107,0.35);color:var(--accent3)}
+
+  .cover-contact{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;
+    padding-top:5mm;border-top:1px solid var(--border);
+    margin-top:auto;
+  }
+  .cc-lbl{font-size:1.8mm;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1mm}
+  .cc-val{font-size:2.5mm;color:var(--text-muted)}
+  .cc-val.a{color:var(--accent)}
+
+  /* Decorative bg glows */
+  .page-cover::after{
+    content:'';position:absolute;top:0;right:0;
+    width:60mm;height:60mm;pointer-events:none;
+    background:radial-gradient(ellipse at 100% 0%,rgba(0,229,192,0.06),transparent 70%);
+  }
+  .page-cover::before{
+    content:'';position:absolute;bottom:0;left:0;
+    width:70mm;height:70mm;pointer-events:none;
+    background:radial-gradient(ellipse at 0% 100%,rgba(123,94,248,0.07),transparent 70%);
+  }
+
+  /* ══════════════════════════════════ */
+  /* PROJECT PAGES                     */
+  /* ══════════════════════════════════ */
+  .page-proj{
+    background:var(--bg);
+    padding:9mm 14mm 8mm;
+    display:flex;flex-direction:column;
+  }
+
+  .pg-topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-bottom:4mm;margin-bottom:5mm;
+    border-bottom:1px solid var(--border);
+  }
+  .pg-logo{
+    font-family:var(--font-head);font-size:3mm;font-weight:800;
+    color:var(--accent);letter-spacing:-0.02em;
+  }
+  .pg-section{
+    font-size:2mm;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);
+  }
+
+  .proj-card{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+  .proj-divider{height:1px;background:var(--border);margin:5mm 0;flex-shrink:0}
+
+  .proj-hdr{
+    display:flex;align-items:center;gap:3.5mm;margin-bottom:3mm;flex-shrink:0;
+  }
+  .proj-num{
+    font-family:var(--font-head);font-size:2.8mm;color:var(--accent);
+    letter-spacing:0.15em;border:1px solid rgba(0,229,192,0.2);
+    padding:1mm 3mm;flex-shrink:0;
+  }
+  .proj-type-badge{
+    padding:1mm 3mm;font-size:1.8mm;letter-spacing:0.1em;
+    text-transform:uppercase;border:1px solid var(--border);color:var(--text-dim);
+    flex-shrink:0;
+  }
+  .proj-title-text{
+    font-family:var(--font-head);font-size:5.5mm;font-weight:700;
+    color:var(--text);letter-spacing:-0.01em;flex:1;text-align:right;
+    line-height:1.1;
+  }
+
+  .proj-img{
+    width:100%;overflow:hidden;flex-shrink:0;
+    border:1px solid var(--border);
+  }
+  .proj-img img{
+    width:100%;display:block;object-fit:cover;
+  }
+
+  .proj-body{
+    display:flex;gap:5mm;margin-top:3mm;align-items:flex-start;flex-shrink:0;
+  }
+  .proj-desc{
+    flex:1;font-size:2.6mm;line-height:1.8;color:var(--text-muted);
+  }
+  .proj-tags{
+    display:flex;flex-direction:column;gap:1.5mm;
+    flex-shrink:0;width:36mm;align-items:flex-end;
+  }
+  .ptag{
+    padding:1mm 3mm;font-size:1.9mm;letter-spacing:0.06em;
+    border:1px solid var(--border);color:var(--text-dim);white-space:nowrap;
+  }
+  .ptag.hi{border-color:rgba(0,229,192,0.35);color:var(--accent)}
+  .ptag.hi2{border-color:rgba(123,94,248,0.35);color:var(--accent2)}
+
+  .pg-footer{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:4mm;margin-top:auto;border-top:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .pgf-name{font-size:2mm;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase}
+  .pgf-num{font-size:2mm;color:var(--accent);letter-spacing:0.1em}
+
+  /* Last page extra content */
+  .closing-block{
+    margin-top:auto;padding-top:6mm;border-top:1px solid var(--border);
+  }
+  .closing-row{
+    display:flex;align-items:flex-start;gap:8mm;
+  }
+  .closing-lbl{
+    font-size:2mm;letter-spacing:0.15em;text-transform:uppercase;
+    color:var(--text-dim);margin-bottom:3mm;
+  }
+  .closing-tags{display:flex;flex-wrap:wrap;gap:2mm}
+</style>
+</head>
+<body>
+
+<div class="fab-wrap no-print">
+  <button class="fab-pdf" onclick="window.print()">⬇ Save as PDF</button>
+  <a href="index.html" class="fab-back">← Back to CV</a>
+</div>
+
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 1 · COVER                              -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page page-cover">
+  <div class="cover-topbar">
+    <div class="cover-logo">MRA_PORTFOLIO</div>
+    <div class="cover-doc-tag">Portfolio · 2024 – 2025</div>
+  </div>
+
+  <div class="cover-main">
+    <div class="cover-eyebrow">IoT &amp; Web Application Developer</div>
+    <div class="cover-name">MOHAMAD<br><span>RAHMAN</span><br>ALAMSYAH</div>
+    <div class="cover-role">Software Engineer · PT Bumiputra Manufaktur Teknologi</div>
+    <div class="cover-line"></div>
+    <div class="cover-summary">
+      3.5 years of professional experience designing and developing web-based systems integrated with IoT devices and enterprise platforms. Delivered 7 production systems across fleet management, AI, inventory, production monitoring, and computer vision domains — serving active factory and logistics operations.
+    </div>
+  </div>
+
+  <div class="cover-stats">
+    <div class="cstat">
+      <div class="cstat-num">3.5<small>yr</small></div>
+      <div class="cstat-lbl">Experience</div>
+    </div>
+    <div class="cstat">
+      <div class="cstat-num">7+</div>
+      <div class="cstat-lbl">Systems Delivered</div>
+    </div>
+    <div class="cstat">
+      <div class="cstat-num">4+</div>
+      <div class="cstat-lbl">Projects / Semester</div>
+    </div>
+    <div class="cstat">
+      <div class="cstat-num">6+</div>
+      <div class="cstat-lbl">Tech Stacks</div>
+    </div>
+  </div>
+
+  <div class="cover-stack">
+    <span class="ctag hi">PHP / Laravel</span>
+    <span class="ctag hi">Python</span>
+    <span class="ctag hi">OpenCV</span>
+    <span class="ctag">MySQL</span>
+    <span class="ctag">SQL Server</span>
+    <span class="ctag">PostgreSQL</span>
+    <span class="ctag hi">Node-RED</span>
+    <span class="ctag">Modbus</span>
+    <span class="ctag">RFID</span>
+    <span class="ctag hi2">AI / LLM</span>
+    <span class="ctag">CUDA</span>
+    <span class="ctag">Leaflet</span>
+    <span class="ctag">ERP Integration</span>
+    <span class="ctag">Vue.js</span>
+    <span class="ctag lo">AI / ML ← learning</span>
+  </div>
+
+  <div class="cover-contact">
+    <div>
+      <div class="cc-lbl">Phone</div>
+      <div class="cc-val">082112971698</div>
+    </div>
+    <div>
+      <div class="cc-lbl">Email</div>
+      <div class="cc-val a">ravensproject1@gmail.com</div>
+    </div>
+    <div>
+      <div class="cc-lbl">Location</div>
+      <div class="cc-val">Kab. Bekasi, West Java</div>
+    </div>
+    <div>
+      <div class="cc-lbl">LinkedIn</div>
+      <div class="cc-val a">mohamad-rahman-alamsyah</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 2 · GPS TRUCK + AI ASSISTANT           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page page-proj">
+  <div class="pg-topbar">
+    <div class="pg-logo">MRA_PORTFOLIO</div>
+    <div class="pg-section">Fleet &amp; AI Applications</div>
+  </div>
+
+  <div class="proj-card">
+    <div class="proj-hdr">
+      <div class="proj-num">01</div>
+      <div class="proj-type-badge">GPS · Fleet · ERP</div>
+      <div class="proj-title-text">Truck Delivery Control</div>
+    </div>
+    <div class="proj-img" style="height:52mm">
+      <img src="gps.png" alt="Truck Delivery Control" style="height:52mm">
+    </div>
+    <div class="proj-body">
+      <div class="proj-desc">Real-time fleet visibility dashboard tracking 13 active deliveries with GPS-based status classification — Normal, Advance, Delay, Standby — plus live ETA and customer arrival timestamps synced to the company ERP. Supports per-driver route monitoring and daily delivery summary reports.</div>
+      <div class="proj-tags">
+        <span class="ptag hi">PHP / Laravel</span>
+        <span class="ptag hi">GPS API</span>
+        <span class="ptag">Real-Time</span>
+        <span class="ptag">ERP Integration</span>
+        <span class="ptag hi2">IoT</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-divider"></div>
+
+  <div class="proj-card">
+    <div class="proj-hdr">
+      <div class="proj-num">02</div>
+      <div class="proj-type-badge">AI · Multi-Model · LLM</div>
+      <div class="proj-title-text">PreDelivery AI Assistant</div>
+    </div>
+    <div class="proj-img" style="height:52mm">
+      <img src="ai.png" alt="PreDelivery AI Assistant" style="height:52mm">
+    </div>
+    <div class="proj-body">
+      <div class="proj-desc">Multi-model AI chatbot supporting OpenRouter (DeepSeek R1), Groq, and Gemini for delivery data analysis, abnormality detection, and route performance insights. Features chat history persistence, model switching, and contextual understanding of live delivery data.</div>
+      <div class="proj-tags">
+        <span class="ptag hi2">AI / LLM</span>
+        <span class="ptag hi">OpenRouter</span>
+        <span class="ptag">Groq</span>
+        <span class="ptag">Gemini</span>
+        <span class="ptag">DeepSeek R1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <div class="pgf-name">Mohamad Rahman Alamsyah · Portfolio</div>
+    <div class="pgf-num">02 / 05</div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 3 · MY STOCK + MY STOCK ANALYTICS      -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page page-proj">
+  <div class="pg-topbar">
+    <div class="pg-logo">MRA_PORTFOLIO</div>
+    <div class="pg-section">Inventory Management</div>
+  </div>
+
+  <div class="proj-card">
+    <div class="proj-hdr">
+      <div class="proj-num">03</div>
+      <div class="proj-type-badge">Inventory · IoT · Modula</div>
+      <div class="proj-title-text">My Stock — Modula Monitor</div>
+    </div>
+    <div class="proj-img" style="height:52mm">
+      <img src="mystock.png" alt="My Stock Modula Monitor" style="height:52mm">
+    </div>
+    <div class="proj-body">
+      <div class="proj-desc">Vertical warehouse inventory monitoring system displaying real-time stock levels, min/max thresholds, and age tracking per SKU — directly integrated with Modula vertical carousel machines and ERP for automated picklist generation and auto-order processing.</div>
+      <div class="proj-tags">
+        <span class="ptag hi">PHP</span>
+        <span class="ptag hi">Modula API</span>
+        <span class="ptag hi2">IoT</span>
+        <span class="ptag">ERP</span>
+        <span class="ptag">Auto-Order</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-divider"></div>
+
+  <div class="proj-card">
+    <div class="proj-hdr">
+      <div class="proj-num">04</div>
+      <div class="proj-type-badge">Analytics · Dark Dashboard</div>
+      <div class="proj-title-text">My Stock — Analytics View</div>
+    </div>
+    <div class="proj-img" style="height:52mm">
+      <img src="mystock1.png" alt="My Stock Analytics View" style="height:52mm">
+    </div>
+    <div class="proj-body">
+      <div class="proj-desc">Dark-mode extended stock analytics dashboard with machine-level KPIs, multi-module inventory state visualization, and critical low-stock alerting across all Modula vertical storage units. Provides operators with an at-a-glance health overview of the entire warehouse system.</div>
+      <div class="proj-tags">
+        <span class="ptag hi">PHP</span>
+        <span class="ptag">Modula</span>
+        <span class="ptag">Dashboard</span>
+        <span class="ptag hi2">Analytics</span>
+        <span class="ptag">Low-Stock Alert</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <div class="pgf-name">Mohamad Rahman Alamsyah · Portfolio</div>
+    <div class="pgf-num">03 / 05</div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 4 · OEE + WAITING POST                 -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page page-proj">
+  <div class="pg-topbar">
+    <div class="pg-logo">MRA_PORTFOLIO</div>
+    <div class="pg-section">Production Monitoring</div>
+  </div>
+
+  <div class="proj-card">
+    <div class="proj-hdr">
+      <div class="proj-num">05</div>
+      <div class="proj-type-badge">OEE · Production · ERP</div>
+      <div class="proj-title-text">OEE — Efisiensi Produksi</div>
+    </div>
+    <div class="proj-img" style="height:52mm">
+      <img src="oee.png" alt="OEE Efisiensi Produksi" style="height:52mm">
+    </div>
+    <div class="proj-body">
+      <div class="proj-desc">Internal production efficiency monitoring system (My Monitor) displaying real-time OEE up to 95%, total output metrics (40,533 units), and per-shift KPIs for Pagi, Siang &amp; Malam shifts. Fully integrated with company ERP for automated data collection, trend analysis, and availability &amp; performance tracking.</div>
+      <div class="proj-tags">
+        <span class="ptag hi">PHP / Laravel</span>
+        <span class="ptag hi">ERP Integration</span>
+        <span class="ptag hi2">OEE</span>
+        <span class="ptag">Per-Shift KPI</span>
+        <span class="ptag">My Monitor</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-divider"></div>
+
+  <div class="proj-card">
+    <div class="proj-hdr">
+      <div class="proj-num">06</div>
+      <div class="proj-type-badge">Production · Live · Laravel</div>
+      <div class="proj-title-text">Waiting Post &amp; Prep Monitor</div>
+    </div>
+    <div class="proj-img" style="height:52mm">
+      <img src="waitingpost.png" alt="Waiting Post Monitor" style="height:52mm">
+    </div>
+    <div class="proj-body">
+      <div class="proj-desc">Split-screen production schedule orchestrator showing waiting post assignments (left panel) and real-time preparation progress bars across all customer delivery slots (right panel). Enables instant shop-floor visibility for dispatch supervisors and reduces preparation lead time.</div>
+      <div class="proj-tags">
+        <span class="ptag hi">PHP / Laravel</span>
+        <span class="ptag hi">Real-Time</span>
+        <span class="ptag">Production</span>
+        <span class="ptag hi2">Live Dashboard</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <div class="pgf-name">Mohamad Rahman Alamsyah · Portfolio</div>
+    <div class="pgf-num">04 / 05</div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PAGE 5 · SMART TRAFFIC AI (closing page)    -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page page-proj">
+  <div class="pg-topbar">
+    <div class="pg-logo">MRA_PORTFOLIO</div>
+    <div class="pg-section">Computer Vision &amp; AI</div>
+  </div>
+
+  <div class="proj-card" style="flex:none">
+    <div class="proj-hdr">
+      <div class="proj-num">07</div>
+      <div class="proj-type-badge">AI · Computer Vision · CUDA</div>
+      <div class="proj-title-text">Smart Traffic AI</div>
+    </div>
+    <div class="proj-img" style="height:82mm">
+      <img src="smart%20trafic.png" alt="Smart Traffic AI" style="height:82mm">
+    </div>
+    <div class="proj-body">
+      <div class="proj-desc">Real-time traffic monitoring system using OpenCV/FFMPEG CCTV live streams with TFT-based vehicle detection accelerated by GPU (CUDA). Displays vehicle count, traffic status, FPS, and DB write metrics. Features a Leaflet live map across 5 CCTV locations and an integrated Qwen 3.0b AI assistant for natural-language traffic condition queries.</div>
+      <div class="proj-tags">
+        <span class="ptag hi2">AI / CV</span>
+        <span class="ptag hi">Python</span>
+        <span class="ptag hi">OpenCV</span>
+        <span class="ptag">FFMPEG</span>
+        <span class="ptag">CUDA / GPU</span>
+        <span class="ptag">TFT Detection</span>
+        <span class="ptag">Leaflet Maps</span>
+        <span class="ptag">Qwen 3.0b</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="closing-block">
+    <div class="closing-row">
+      <div style="flex:1">
+        <div class="closing-lbl">Currently Learning</div>
+        <div class="closing-tags">
+          <span class="ctag lo" style="padding:1.5mm 4mm;font-size:2mm;letter-spacing:0.07em;border:1px solid rgba(255,107,107,0.35);color:var(--accent3)">AI / Machine Learning</span>
+          <span class="ctag lo" style="padding:1.5mm 4mm;font-size:2mm;letter-spacing:0.07em;border:1px solid rgba(255,107,107,0.35);color:var(--accent3)">PostgreSQL Advanced</span>
+          <span class="ctag lo" style="padding:1.5mm 4mm;font-size:2mm;letter-spacing:0.07em;border:1px solid rgba(255,107,107,0.35);color:var(--accent3)">Deep Learning</span>
+        </div>
+      </div>
+      <div style="flex:1;text-align:right">
+        <div class="closing-lbl">Education</div>
+        <div style="font-family:var(--font-head);font-size:3mm;font-weight:700;color:var(--text);margin-bottom:1mm">Bachelor of Information Systems (S1)</div>
+        <div style="font-size:2.2mm;color:var(--accent)">President University · 2024 – Present</div>
+        <div style="font-size:2mm;color:var(--text-dim);margin-top:2mm">D3 Management Information Systems</div>
+        <div style="font-size:2mm;color:var(--text-muted)">Universitas Gunadarma · Graduated 2022</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <div class="pgf-name">Mohamad Rahman Alamsyah · Portfolio</div>
+    <div class="pgf-num">05 / 05</div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'p') { e.preventDefault(); window.print(); }
+  });
+</script>
+</body>
+</html>

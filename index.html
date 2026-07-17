@@ -482,6 +482,13 @@
       <a href="#education" :class="{active:activeSection==='education'}">Education</a>
       <a href="#contact" :class="{active:activeSection==='contact'}">Contact</a>
     </div>
+    <a href="portfolio.html" target="_blank" style="
+      padding:0.45rem 1.1rem;background:var(--accent);color:#000;
+      font-family:var(--font-mono);font-size:0.65rem;font-weight:700;
+      letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;
+      clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+      transition:background 0.2s;white-space:nowrap;
+    " onmouseover="this.style.background='#fff'" onmouseout="this.style.background='var(--accent)'">⬇ Portfolio PDF</a>
   </nav>
 
   <!-- HERO -->
@@ -511,7 +518,7 @@
           <div class="stat-label">Professional Experience</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">4+</div>
+          <div class="stat-num">7+</div>
           <div class="stat-label">Projects per semester</div>
         </div>
         <div class="stat-item">
@@ -546,6 +553,7 @@
         <li class="achievement-item"><span class="ach-dot"></span>Currently integrating a local AI model into My Production app for intelligent suggestions and automated summaries</li>
         <li class="achievement-item"><span class="ach-dot"></span>Integrated web application with digital weighing scales for raw material monitoring pre-burning process</li>
         <li class="achievement-item"><span class="ach-dot"></span>Developed Gas Monitoring system integrated with flow meters to track real-time gas consumption and operational costs</li>
+        <li class="achievement-item"><span class="ach-dot"></span>Built Smart Traffic AI system using OpenCV/FFMPEG CCTV streams with TFT vehicle detection (GPU/CUDA) and Leaflet multi-location live map for real-time traffic condition monitoring</li>
       </ul>
     </div>
   </section>
@@ -650,15 +658,38 @@
         </div>
       </div>
 
-      <!-- 05 · Waiting Post & Preparation Monitor (2 cols, wide) -->
-      <div class="port-card port-wide reveal" onclick="openLightbox(4)">
+      <!-- 05 · OEE Production Monitor (1 col — fills row 2 gap) -->
+      <div class="port-card reveal" onclick="openLightbox(4)">
         <div class="port-img-wrap">
-          <img src="waitingpost.png" alt="Waiting Post & Preparation Monitor" loading="lazy">
+          <img src="oee.png" alt="OEE Efisiensi Produksi" loading="lazy">
           <div class="port-scan-line"></div>
           <div class="port-overlay">
             <button class="port-expand-btn" onclick="event.stopPropagation();openLightbox(4)">⤢ Expand View</button>
           </div>
           <div class="port-num-badge">05</div>
+          <div class="port-type-badge">OEE · Produksi</div>
+        </div>
+        <div class="port-info">
+          <div class="port-title">OEE — Efisiensi Produksi</div>
+          <div class="port-desc">Internal production efficiency monitoring system (My Monitor) displaying real-time OEE up to 95%, total output per shift (Pagi / Siang / Malam), and availability metrics — integrated with the company's ERP for automated data collection.</div>
+          <div class="port-tags">
+            <span class="port-tag">PHP / Laravel</span>
+            <span class="port-tag">ERP Integration</span>
+            <span class="port-tag accent">OEE</span>
+            <span class="port-tag">Per-Shift KPI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 · Waiting Post & Preparation Monitor (2 cols, wide) -->
+      <div class="port-card port-wide reveal" onclick="openLightbox(5)">
+        <div class="port-img-wrap">
+          <img src="waitingpost.png" alt="Waiting Post & Preparation Monitor" loading="lazy">
+          <div class="port-scan-line"></div>
+          <div class="port-overlay">
+            <button class="port-expand-btn" onclick="event.stopPropagation();openLightbox(5)">⤢ Expand View</button>
+          </div>
+          <div class="port-num-badge">06</div>
           <div class="port-type-badge">Production · Live</div>
         </div>
         <div class="port-info">
@@ -673,6 +704,41 @@
         </div>
       </div>
 
+      <!-- 07 · Smart Traffic AI (1 col — fills slot next to WaitingPost) -->
+      <div class="port-card reveal" onclick="openLightbox(6)">
+        <div class="port-img-wrap">
+          <img src="smart%20trafic.png" alt="Smart Traffic AI" loading="lazy">
+          <div class="port-scan-line"></div>
+          <div class="port-overlay">
+            <button class="port-expand-btn" onclick="event.stopPropagation();openLightbox(6)">⤢ Expand View</button>
+          </div>
+          <div class="port-num-badge">07</div>
+          <div class="port-type-badge">AI · Vision</div>
+        </div>
+        <div class="port-info">
+          <div class="port-title">Smart Traffic AI</div>
+          <div class="port-desc">Real-time traffic monitoring system using OpenCV/FFMPEG CCTV streams with TFT vehicle detection (GPU/CUDA), Leaflet live map across 5 locations, and an AI chatbot for traffic condition queries.</div>
+          <div class="port-tags">
+            <span class="port-tag accent">AI / CV</span>
+            <span class="port-tag">Python</span>
+            <span class="port-tag">OpenCV</span>
+            <span class="port-tag">FFMPEG</span>
+            <span class="port-tag">CUDA</span>
+            <span class="port-tag">Leaflet</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Download CTA -->
+    <div class="reveal" style="margin-top:2.5rem;display:flex;align-items:center;justify-content:center;gap:1rem;padding:2rem;border:1px solid var(--border);background:var(--surface);position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(0,229,192,0.03));pointer-events:none"></div>
+      <div style="text-align:left">
+        <div style="font-family:var(--font-head);font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:0.25rem">Want the full portfolio document?</div>
+        <div style="font-size:0.72rem;color:var(--text-muted)">A4 · 5 pages · Dark design · All 7 projects</div>
+      </div>
+      <a href="portfolio.html" target="_blank" class="btn-primary" style="white-space:nowrap;flex-shrink:0">⬇ Download PDF</a>
     </div>
   </section>
 
@@ -971,8 +1037,10 @@ createApp({
     {src:'gps.png',    title:'Truck Delivery Control',       sub:'GPS · Fleet Monitoring · ERP Integration'},
     {src:'ai.png',     title:'PreDelivery AI Assistant',     sub:'Multi-Model LLM · OpenRouter · Groq · Gemini'},
     {src:'mystock.png',title:'My Stock — Modula Monitor',    sub:'Inventory IoT · Modula API · ERP'},
-    {src:'mystock1.png',title:'My Stock — Analytics View',   sub:'Dark Dashboard · Multi-Module Analytics'},
-    {src:'waitingpost.png',title:'Waiting Post & Preparation Monitor', sub:'Production · Live Dashboard · Laravel'},
+    {src:'mystock1.png',      title:'My Stock — Analytics View',          sub:'Dark Dashboard · Multi-Module Analytics'},
+    {src:'oee.png',           title:'OEE — Efisiensi Produksi',           sub:'My Monitor · Per-Shift KPI · ERP Integration'},
+    {src:'waitingpost.png',   title:'Waiting Post & Preparation Monitor',  sub:'Production · Live Dashboard · Laravel'},
+    {src:'smart%20trafic.png',title:'Smart Traffic AI',                    sub:'Computer Vision · OpenCV · FFMPEG · CUDA · Leaflet'},
   ];
   let current = 0;
   const lb    = document.getElementById('lightbox');
